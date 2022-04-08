@@ -21,29 +21,24 @@ class Gruppe {
 
   artikelAuflisten(gekauft) {
     this.artikelListe.map(artikel => {
-      if (artikel.gekauft === gekauft) {
+      if (artikel.gekauft == gekauft) {
         console.debug(`  ${artikel.name}`)
       }
     })
   }
 
-  artikelHinzufuegen(name, menge) {
+  artikelHinzufuegen(name) {
     let vorhandenerArtikel = this.artikelFinden(name, false)
     if (!vorhandenerArtikel) {
-      let neuerArtikel = new Artikel(name, this.artikelListe.length, menge)
+      let neuerArtikel = new Artikel(name, this.artikelListe.length)
       this.artikelListe.push(neuerArtikel)
       App.informieren(`[${this.name}] Artikel "${name}" hinzugefügt`)
       return neuerArtikel
     } else {
-      this.artikelMengeAendern(vorhandenerArtikel, menge)
       App.informieren(`[${this.name}] Artikel "${name}" existiert schon!`, true)
     }
   }
-  
-  artikelMengeAendern(artikelobjekt, neueMenge) {
-    artikelobjekt.menge = artikelobjekt.menge + neueMenge
-  }
-  
+
   artikelObjektHinzufuegen(artikel) {
     let neuerArtikel = this.artikelHinzufuegen(artikel.name)
     // kopiert alle Properties aus "artikel" nach "neuerArtikel"

@@ -3,6 +3,8 @@ class App {
   static gruppenListe = []
   static aktiveGruppe = null
   static meldungenAusgeben = true
+  static einkaufenAufgeklappt = true
+  static erledigtAufgeklappt = false
 
   static gruppeFinden(gruppenId) {
     const gefundeneGruppen = this.gruppenListe.filter((gruppe) => gruppe.id == gruppenId)
@@ -14,14 +16,12 @@ class App {
     }
   }
 
-  static gruppeHinzufuegen = (name)=> {
-
-    const gleicheGruppen = this.gruppenListe.filter(gruppe => gruppe.name === name)
+  static gruppeHinzufuegen(name) {
+    const gleicheGruppen = this.gruppenListe.filter(gruppe => gruppe.name == name)
     // keine Gruppe mit diesem Namen vorhanden
-    if (gleicheGruppen.length === 0) {
+    if (gleicheGruppen.length == 0) {
       let neueGruppe = new Gruppe(name, this.gruppenListe.length)
       this.gruppenListe.push(neueGruppe)
-      console.log(neueGruppe)
       App.informieren(`[App] Gruppe "${neueGruppe.name}" hinzugefügt`)
       this.aktiveGruppe = neueGruppe.id
       return neueGruppe
@@ -76,6 +76,7 @@ class App {
         neueGruppe.artikelObjektHinzufuegen(artikel)
       })
     })
+    this.aktiveGruppe = jsonDaten.aktiveGruppe
   }
 
   static stummschalten() {
@@ -86,7 +87,7 @@ class App {
     this.meldungenAusgeben = true
   }
 
-  static speichern= ()=> {
+  static speichern() {
     const json = {
       gruppenListe: this.gruppenListe,
       aktiveGruppe: this.aktiveGruppe,
@@ -94,7 +95,7 @@ class App {
     localStorage.setItem(this.STORAGE_KEY, JSON.stringify(json))
   }
 
-  static laden=()=> {
+  static laden() {
     let daten = JSON.parse(localStorage.getItem(this.STORAGE_KEY))
     this.initialisieren(daten)
   }
@@ -102,7 +103,7 @@ class App {
   static informieren(nachricht, istWarnung) {
     if (this.meldungenAusgeben) {
       if (istWarnung) {
-        console.warn(nachricht)
+        console.log(nachricht)
       } else {
         console.debug(nachricht)
         this.speichern()
@@ -110,4 +111,3 @@ class App {
     }
   }
 }
-

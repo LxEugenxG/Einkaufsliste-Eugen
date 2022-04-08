@@ -3,10 +3,8 @@ class ShoppingTag extends React.Component {
         super();
         
         App.datenEinlesen()
-
-        //console.log("Master Desaster")
         
-        this.state = {aktiveGruppe: 1, menge: 1, 
+        this.state = {aktiveGruppe: 1, gruppenListe:App.gruppenListe,
             einkaufenAufgeklappt: true, erledigtAufgeklappt: false,showGruppenDialog: false}
         
     }
@@ -37,12 +35,7 @@ class ShoppingTag extends React.Component {
         eingabe.focus()
     }
 
-    mengeErhoehen = () => {
-        this.setState({menge: this.state.menge + 1})
-    }
-    mengeReduzieren = () => {
-        this.setState({menge: this.state.menge - 1 > 0 ? this.state.menge - 1 : this.state.menge})
-    }
+
     toggleEinkaufenAufgeklappt = () => {
         this.setState({einkaufenAufgeklappt: !this.state.einkaufenAufgeklappt})
     }
@@ -64,15 +57,10 @@ class ShoppingTag extends React.Component {
             <div>
                 <header>
                     <h1>Einkaufsliste</h1>
-                    <div className="eingabeleiste">
+                    <div>
 
                         <label htmlFor="Artikel"><input type="text" id="eingabe" placeholder="Artikel hinzufügen"
                                                         autoComplete="on"/></label>
-                        <span className="mengenfeld">{this.state.menge}</span>
-                        <button onClick={this.mengeErhoehen}><span className="material-icons">arrow_circle_up</span>
-                        </button>
-                        <button onClick={this.mengeReduzieren}><span className="material-icons">arrow_circle_down</span>
-                        </button>
                         <button onClick={this.artikelHinzufuegen}><span className="material-icons">add_circle</span>
                         </button>
                     </div>
@@ -109,11 +97,16 @@ class ShoppingTag extends React.Component {
                 </main>
                 <hr/>
 
-                <NaviTag gruppenDialogOpen={this.gruppenDialogOpen}/>
+                <nav>
+                    <button onClick= {this.gruppenDialogOpen}><span
+                      className="material-icons">bookmark_add</span>Gruppen</button>
+                </nav>
 
-                <GruppenDialogTag visible={this.state.showGruppenDialog}
-                                  gruppeHinzufuegen={App.gruppeHinzufuegen}
-                                  onDialogClose={() => this.setState({showGruppenDialog: false})}/>
+
+                <GruppenDialog visible={this.state.showGruppenDialog}
+                               gruppeHinzufuegen={App.gruppeHinzufuegen}
+                               gruppenListe={App.gruppenListe}
+                               onDialogClose={() => this.setState({showGruppenDialog: false})}/>
                 
                 
             </div>
